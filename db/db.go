@@ -46,4 +46,23 @@ func createTables() {
 	if err != nil {
 		panic("Failed to create users table: " + err.Error())
 	}
+
+	createEventsTable := `
+	CREATE TABLE IF NOT EXISTS events(
+		id SERIAL PRIMARY KEY,
+		name TEXT NOT NULL,
+		desctiption TEXT,
+		location TEXT NOT NULL,
+		dateTime TIMESTAMP NOT NULL,
+		userId INTEGER NOT NULL,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		CONSTRAINT events_user_id_fk FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+	)
+	`
+
+	_, err = DB.Exec(createEventsTable)
+	if err != nil {
+		panic("Failed to create events table: " + err.Error())
+	}
+
 }
